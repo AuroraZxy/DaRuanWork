@@ -1,0 +1,45 @@
+Êþº¾   4
+      java/lang/Object <init> ()V  1org/springframework/data/redis/core/RedisTemplate
+  	      'cn/felord/rediscache/config/RedisConfig lettuceConnectionFactory LLorg/springframework/data/redis/connection/lettuce/LettuceConnectionFactory;
+     setConnectionFactory E(Lorg/springframework/data/redis/connection/RedisConnectionFactory;)V
+     initJacksonSerializer I()Lorg/springframework/data/redis/serializer/Jackson2JsonRedisSerializer;
+     setValueSerializer >(Lorg/springframework/data/redis/serializer/RedisSerializer;)V  ?org/springframework/data/redis/serializer/StringRedisSerializer
+  
+    !  setKeySerializer
+  # $  afterPropertiesSet	 & ' ( ) * java/lang/System out Ljava/io/PrintStream; , +++++
+ . / 0 1 2 java/io/PrintStream println (Ljava/lang/String;)V 4 5 6 7 8 5org/springframework/data/redis/cache/RedisCacheWriter nonLockingRedisCacheWriter {(Lorg/springframework/data/redis/connection/RedisConnectionFactory;)Lorg/springframework/data/redis/cache/RedisCacheWriter;
+ : ; < = > Oorg/springframework/data/redis/cache/RedisCacheManager$RedisCacheManagerBuilder fromCacheWriter ?Lorg/springframework/data/redis/cache/RedisCacheWriter;)Lorg/springframework/data/redis/cache/RedisCacheManager$RedisCacheManagerBuilder;
+ @ A B C D java/lang/Integer valueOf (I)Ljava/lang/Integer;
+  F G H redisConfig S(Ljava/lang/Integer;)Lorg/springframework/data/redis/cache/RedisCacheConfiguration;
+ : J K L cacheDefaults ?Lorg/springframework/data/redis/cache/RedisCacheConfiguration;)Lorg/springframework/data/redis/cache/RedisCacheManager$RedisCacheManagerBuilder;
+  N O P redisCacheConfigurationMap ()Ljava/util/Map;
+ : R S T withInitialCacheConfigurations b(Ljava/util/Map;)Lorg/springframework/data/redis/cache/RedisCacheManager$RedisCacheManagerBuilder;
+ : V W X build :()Lorg/springframework/data/redis/cache/RedisCacheManager; Z )cn/felord/rediscache/config/CacheNameEnum
+ \ ] ^ _ ` java/lang/Class getEnumConstants ()[Ljava/lang/Object; b [Ljava/lang/Enum; d java/util/HashMap
+ c f  g (I)V
+ Y i j k 	cacheName ()Ljava/lang/String;
+ Y m n o 	ttlSecond ()I q r s t u java/util/Map put 8(Ljava/lang/Object;Ljava/lang/Object;)Ljava/lang/Object; w x y z { Uorg/springframework/data/redis/serializer/RedisSerializationContext$SerializationPair fromSerializer ?Lorg/springframework/data/redis/serializer/RedisSerializer;)Lorg/springframework/data/redis/serializer/RedisSerializationContext$SerializationPair;
+ } ~  € ? <org/springframework/data/redis/cache/RedisCacheConfiguration defaultCacheConfig @()Lorg/springframework/data/redis/cache/RedisCacheConfiguration;
+ } ? ? ? serializeValuesWith ?Lorg/springframework/data/redis/serializer/RedisSerializationContext$SerializationPair;)Lorg/springframework/data/redis/cache/RedisCacheConfiguration;
+ @ ? ? o intValue
+ ? ? ? ? ? java/time/Duration 	ofSeconds (J)Ljava/time/Duration;
+ } ? ? ? entryTtl T(Ljava/time/Duration;)Lorg/springframework/data/redis/cache/RedisCacheConfiguration; ? Eorg/springframework/data/redis/serializer/Jackson2JsonRedisSerializer
+ ? ?  ? (Ljava/lang/Class;)V ? +com/fasterxml/jackson/databind/ObjectMapper
+ ? 	 ? ? ? ? ? 1com/fasterxml/jackson/annotation/PropertyAccessor ALL 3Lcom/fasterxml/jackson/annotation/PropertyAccessor;	 ? ? ? ? ? :com/fasterxml/jackson/annotation/JsonAutoDetect$Visibility ANY <Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;
+ ? ? ? ? setVisibility ?Lcom/fasterxml/jackson/annotation/PropertyAccessor;Lcom/fasterxml/jackson/annotation/JsonAutoDetect$Visibility;)Lcom/fasterxml/jackson/databind/ObjectMapper;	 ? ? ? ? ? 9com/fasterxml/jackson/databind/ObjectMapper$DefaultTyping 	NON_FINAL ;Lcom/fasterxml/jackson/databind/ObjectMapper$DefaultTyping;
+ ? ? ? ? enableDefaultTyping j(Lcom/fasterxml/jackson/databind/ObjectMapper$DefaultTyping;)Lcom/fasterxml/jackson/databind/ObjectMapper;	 ? ? ? ? ? 3com/fasterxml/jackson/databind/SerializationFeature WRITE_DATE_KEYS_AS_TIMESTAMPS 5Lcom/fasterxml/jackson/databind/SerializationFeature;
+ ? ? ? ? disable d(Lcom/fasterxml/jackson/databind/SerializationFeature;)Lcom/fasterxml/jackson/databind/ObjectMapper; ? 4com/fasterxml/jackson/datatype/jsr310/JavaTimeModule
+ ? 
+ ? ? ? ? registerModule V(Lcom/fasterxml/jackson/databind/Module;)Lcom/fasterxml/jackson/databind/ObjectMapper;
+ ? ? ? ? setObjectMapper 0(Lcom/fasterxml/jackson/databind/ObjectMapper;)V RuntimeVisibleAnnotations Ljavax/annotation/Resource; Code LineNumberTable LocalVariableTable this )Lcn/felord/rediscache/config/RedisConfig; redisTemplate 5()Lorg/springframework/data/redis/core/RedisTemplate; 3Lorg/springframework/data/redis/core/RedisTemplate; jackson2JsonRedisSerializer GLorg/springframework/data/redis/serializer/Jackson2JsonRedisSerializer; LocalVariableTypeTable YLorg/springframework/data/redis/core/RedisTemplate<Ljava/lang/Object;Ljava/lang/Object;>; [Lorg/springframework/data/redis/serializer/Jackson2JsonRedisSerializer<Ljava/lang/Object;>; 	Signature [()Lorg/springframework/data/redis/core/RedisTemplate<Ljava/lang/Object;Ljava/lang/Object;>; -Lorg/springframework/context/annotation/Bean; 0Lorg/springframework/context/annotation/Primary; cacheManager l(Lorg/springframework/data/redis/connection/RedisConnectionFactory;)Lorg/springframework/cache/CacheManager; redisConnectionFactory BLorg/springframework/data/redis/connection/RedisConnectionFactory; MethodParameters cacheEnumer +Lcn/felord/rediscache/config/CacheNameEnum; e Ljava/lang/Enum; cacheNameEnumClass Ljava/lang/Class; enums Ljava/util/Map; Ljava/lang/Enum<*>; >Ljava/lang/Class<Lcn/felord/rediscache/config/CacheNameEnum;>; [Ljava/lang/Enum<*>; aLjava/util/Map<Ljava/lang/String;Lorg/springframework/data/redis/cache/RedisCacheConfiguration;>; StackMapTable c()Ljava/util/Map<Ljava/lang/String;Lorg/springframework/data/redis/cache/RedisCacheConfiguration;>; seconds Ljava/lang/Integer; objectSerializationPair WLorg/springframework/data/redis/serializer/RedisSerializationContext$SerializationPair; kLorg/springframework/data/redis/serializer/RedisSerializationContext$SerializationPair<Ljava/lang/Object;>; om -Lcom/fasterxml/jackson/databind/ObjectMapper; ]()Lorg/springframework/data/redis/serializer/Jackson2JsonRedisSerializer<Ljava/lang/Object;>; 
+SourceFile RedisConfig.java 6Lorg/springframework/context/annotation/Configuration; 4Lorg/springframework/cache/annotation/EnableCaching; InnerClasses ? 6org/springframework/data/redis/cache/RedisCacheManager RedisCacheManagerBuilder Corg/springframework/data/redis/serializer/RedisSerializationContext SerializationPair /com/fasterxml/jackson/annotation/JsonAutoDetect 
+Visibility DefaultTyping !          ?     ?        ?   /     *? ?    ?       " ?        ? ?    ? ?  ?   ?     +? Y? 	L+*? 
+? *? M+,? +? Y? ? +? "+?    ?       /  0  2  4  5 % 6 ) 7 ?        + ? ?    # ? ?    ? ?  ?      # ? ?    ? ?  ?    ? ?   
+  ?   ?    ? ?  ?   j     &? %+? -+? 3? 9*<? ?? E? I*? M? Q? U?    ?       C  E  G  I % E ?       & ? ?     & ? ?  ?    ?   ?     ?    O P  ?     	   UYL+? [? aM? cYd? eN,:?6? /2:? Y:-? h*? l? ?? E? p W????    ?   "    T  U  V  W . X 5 Y M W S [ ?   >  5  ? ?  .  ? ?    U ? ?    R ? ?   J ? b   @ O ?  ?   *  .  ? ?   R ? ?   J ? ?   @ O ?  ?    ÿ     \ a q a  ? 2 ?    ?  G H  ?   ?     *? M,? vN? |-? ?? †…? ‰¶ °    ?       e  f  h 
+ j  k  m  j ?   *     ? ?      ? ?    ? ?  
+  ? ?  ?       ? ?  
+  ? ?  ?    ?       ?   ?     @? “Y? •L? ˜Y? šM,? ›² ¡¶ §W,? «¶ ±W,? µ¶ »W,? ¿Y? Á¶ ÂW+,? ??    ?   "    r 
+ s  t  u % w - x 9 y > z ?        @ ? ?   
+ 6 ? ?   . ? ?  ?     
+ 6 ? ?  ?    ?  ?    ? ?   
+  ?   ?   ?   "  : ? ÿ 	 w 	 ?@ ? ?@
